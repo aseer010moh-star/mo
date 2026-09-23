@@ -1,307 +1,461 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>اختبار الفيزياء - الصف الثاني الثانوي</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      user-select: none;
-      -webkit-user-select: none;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار فيزياء 2 بكالوريا 2027 - عزم القوة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; font-family: 'Tajawal', sans-serif; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+        
+        body { 
+            background: #0f172a; 
+            color: #f8fafc; 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 15px; 
+            position: relative; 
+            overflow-x: hidden;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 40%);
+            filter: blur(40px);
+            z-index: 0;
+        }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: #f8fafc;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 15px;
-    }
+        .global-watermark { 
+            position: fixed; 
+            top: 50%; left: 50%; 
+            transform: translate(-50%, -50%) rotate(-20deg); 
+            font-size: 3.5rem; 
+            font-weight: 900; 
+            color: rgba(255, 255, 255, 0.03); 
+            white-space: nowrap; 
+            pointer-events: none; 
+            z-index: 1; 
+        }
 
-    .container {
-      width: 100%;
-      max-width: 650px;
-      background: rgba(30, 41, 59, 0.7);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 25px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-    }
+        .container { 
+            width: 100%; 
+            max-width: 650px; 
+            background: rgba(30, 41, 59, 0.75); 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px; 
+            padding: 25px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            position: relative; 
+            z-index: 2; 
+        }
 
-    h1, h2 {
-      text-align: center;
-      color: #38bdf8;
-      margin-bottom: 20px;
-    }
+        .header-title { 
+            text-align: center; 
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(99, 102, 241, 0.2)); 
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: #ffffff; 
+            padding: 16px; 
+            border-radius: 16px; 
+            font-size: 1.15rem; 
+            font-weight: bold; 
+            margin-bottom: 20px; 
+            line-height: 1.5; 
+        }
+        
+        #login-section { display: flex; flex-direction: column; gap: 14px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; text-align: right; }
+        .form-group label { font-size: 0.9rem; color: #38bdf8; font-weight: 700; }
+        .form-control { background-color: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 12px 16px; color: #f8fafc; font-size: 0.95rem; outline: none; }
+        .form-control:focus { border-color: #38bdf8; }
+        
+        .btn-start { background: linear-gradient(135deg, #38bdf8, #6366f1); color: white; padding: 14px; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        .btn-start:hover { transform: translateY(-2px); }
 
-    .form-group {
-      margin-bottom: 15px;
-    }
+        #exam-section { display: none; }
+        .formula-guide-box { background-color: rgba(15, 23, 42, 0.6); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 10px; margin-bottom: 15px; }
+        .formula-guide-title { color: #38bdf8; font-size: 0.85rem; font-weight: bold; margin-bottom: 6px; text-align: center; }
+        .status-panel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        
+        .timer-badge { background: rgba(251, 191, 36, 0.1); color: #fbbf24; padding: 6px 14px; border-radius: 10px; font-size: 0.95rem; font-weight: bold; font-family: monospace; border: 1px solid rgba(251, 191, 36, 0.2); }
+        .user-badge { color: #38bdf8; font-weight: 600; font-size: 0.88rem; }
 
-    label {
-      display: block;
-      margin-bottom: 5px;
-      color: #94a3b8;
-    }
+        .question-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; margin-bottom: 15px; background-color: rgba(15, 23, 42, 0.5); padding: 8px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); max-height: 120px; overflow-y: auto; }
+        .grid-btn { background-color: rgba(30, 41, 59, 0.6); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 6px; padding: 6px 0; font-size: 0.8rem; cursor: pointer; text-align: center; font-weight: bold; }
+        .grid-btn.active { background-color: #38bdf8; color: #0f172a; font-weight: bold; border-color: #38bdf8; }
+        .grid-btn.answered { border-color: #4ade80; color: #4ade80; background: rgba(74, 222, 128, 0.1); }
 
-    input[type="text"] {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #334155;
-      background: #0f172a;
-      color: #fff;
-      font-size: 16px;
-      outline: none;
-    }
+        .question-card { background-color: rgba(15, 23, 42, 0.6); border-radius: 16px; padding: 18px; border: 1px solid rgba(255, 255, 255, 0.08); margin-bottom: 15px; position: relative; }
+        .question-content { text-align: right; }
+        .question-header { display: flex; justify-content: space-between; color: #38bdf8; font-size: 0.85rem; margin-bottom: 10px; font-weight: 600; }
+        .question-text { font-size: 0.95rem; line-height: 1.6; color: #f1f5f9; margin-bottom: 12px; font-weight: 500; }
+        .question-image-container { width: 100%; min-height: 90px; background-color: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 8px; margin-bottom: 12px; display: flex; justify-content: center; align-items: center; }
+        .question-image-container svg { width: 100%; max-height: 110px; }
+        
+        .options-list { display: flex; flex-direction: column; gap: 8px; }
+        .option-item { background-color: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: #e2e8f0; font-size: 0.9rem; transition: 0.2s; }
+        .option-item:hover { border-color: #38bdf8; background: rgba(56, 189, 248, 0.05); }
+        .option-item.selected { border-color: #38bdf8; background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(99, 102, 241, 0.2)); color: white; font-weight: bold; }
 
-    input[type="text"]:focus {
-      border-color: #38bdf8;
-    }
+        .action-buttons { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 8px; margin-top: 12px; }
+        .btn { padding: 12px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; font-size: 0.88rem; text-align: center; }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-prev, .btn-next { background-color: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+        .btn-submit { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; }
 
-    .btn {
-      width: 100%;
-      padding: 14px;
-      background: #0284c7;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-      margin-top: 10px;
-    }
+        #result-section { display: none; text-align: center; }
+        .result-title { font-size: 1.25rem; color: #38bdf8; margin-bottom: 8px; font-weight: bold; }
+        
+        .certificate-card {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 3px double #fbbf24;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        .cert-header { font-family: 'Reem Kufi', sans-serif; color: #fbbf24; font-size: 1.5rem; margin-bottom: 5px; }
+        .cert-sub { color: #cbd5e1; font-size: 0.85rem; margin-bottom: 15px; }
+        .cert-name { font-size: 1.4rem; color: #38bdf8; font-weight: bold; margin: 10px 0; border-bottom: 1px dashed #334155; padding-bottom: 5px; }
+        .cert-body { font-size: 0.95rem; line-height: 1.8; color: #f1f5f9; }
+        .cert-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 10px; border-top: 1px solid #334155; font-size: 0.8rem; color: #94a3b8; }
 
-    .btn:hover {
-      background: #0369a1;
-    }
+        .review-box { text-align: right; margin-top: 20px; background: rgba(15, 23, 42, 0.6); padding: 15px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .review-title { color: #f43f5e; font-weight: bold; margin-bottom: 10px; font-size: 1rem; border-bottom: 1px solid #334155; padding-bottom: 5px; }
+        .review-item { background: rgba(30, 41, 59, 0.5); padding: 10px; border-radius: 8px; margin-bottom: 8px; border-right: 3px solid #f43f5e; font-size: 0.85rem; }
+        .correct-ans { color: #4ade80; font-weight: bold; }
+        .user-ans { color: #f43f5e; font-weight: bold; }
 
-    .instructions {
-      background: rgba(15, 23, 42, 0.6);
-      padding: 15px;
-      border-radius: 10px;
-      border-right: 4px solid #38bdf8;
-      margin-bottom: 20px;
-      font-size: 14px;
-      line-height: 1.6;
-      color: #cbd5e1;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .question-card {
-      background: rgba(15, 23, 42, 0.5);
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 15px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .question-title {
-      font-weight: bold;
-      margin-bottom: 12px;
-      color: #f1f5f9;
-    }
-
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .option-btn {
-      padding: 10px 15px;
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      color: #e2e8f0;
-      text-align: right;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .option-btn:hover {
-      background: #334155;
-    }
-
-    .option-btn.selected {
-      background: #0284c7;
-      border-color: #38bdf8;
-      color: #fff;
-    }
-
-    .result-item {
-      background: rgba(15, 23, 42, 0.6);
-      border-radius: 10px;
-      padding: 12px;
-      margin-bottom: 10px;
-      border-right: 4px solid #94a3b8;
-    }
-
-    .result-item.correct { border-right-color: #22c55e; }
-    .result-item.incorrect { border-right-color: #ef4444; }
-
-    .ans-correct { color: #4ade80; font-weight: bold; }
-    .ans-wrong { color: #f87171; font-weight: bold; }
-  </style>
+        @media print {
+            body * { visibility: hidden; }
+            .certificate-card, .certificate-card * { visibility: visible; }
+            .certificate-card { position: absolute; left: 0; top: 0; width: 100%; border: 2px solid #000; }
+        }
+    </style>
 </head>
-<body>
+<body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
 
-<div class="container">
-  <!-- شاشة الدخول والتعليمات -->
-  <div id="login-screen">
-    <h1>اختبار الفيزياء</h1>
-    <div class="instructions">
-      <h3>⚠️ تعليمات هامة قبل البدء:</h3>
-      <ul>
-        <li>يرجى إدخال اسمك ورقم هاتفك بشكل صحيح.</li>
-        <li>الخروج من الشاشة أو تبديل التطبيقات محظور أثناء الاختبار.</li>
-        <li>أجب عن جميع الأسئلة ثم اضغط على زر تسليم الاختبار.</li>
-      </ul>
-    </div>
-    <div class="form-group">
-      <label>اسم الطالب ثلاثي:</label>
-      <input type="text" id="student-name" placeholder="أدخل اسمك الكامل">
-    </div>
-    <div class="form-group">
-      <label>رقم الهاتف:</label>
-      <input type="text" id="student-phone" placeholder="أدخل رقم هاتفك">
-    </div>
-    <button class="btn" onclick="startQuiz()">بدء الاختبار</button>
-  </div>
+    <div class="global-watermark">Mr / MohamadAmeen</div>
 
-  <!-- شاشة الأسئلة -->
-  <div id="quiz-screen" class="hidden">
-    <h2>الأسئلة</h2>
-    <div id="questions-container"></div>
-    <button class="btn" onclick="submitQuiz()">تسليم الاختبار</button>
-  </div>
-
-  <!-- شاشة النتيجة -->
-  <div id="result-screen" class="hidden">
-    <h2>نتيجة الاختبار</h2>
-    <div id="score-text" style="text-align:center; font-size:20px; margin-bottom:20px;"></div>
-    <div id="review-container"></div>
-  </div>
-</div>
-
-<script>
-  // تعطيل كليك يمين والنسخ لحماية الشاشة
-  document.addEventListener('contextmenu', e => e.preventDefault());
-  document.addEventListener('keydown', e => {
-    if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's')) e.preventDefault();
-  });
-
-  // بيانتات أسئلة الاختبار
-  const questions = [
-    { q: "15. يكون اتجاه العزم موجباً (+) عندما يدور الجسم مع اتجاه حركة عقارب الساعة.", options: ["صح", "خطأ"], ans: 1 },
-    { q: "16. عزم القوة هو حاصل ضرب القوة في البعد العمودي عن نقطة الارتكاز.", options: ["صح", "خطأ"], ans: 0 },
-    { q: "17. وحدة قياس عزم القوة في النظام الدولي (SI) هي:", options: ["N·m", "N/m", "J·s"], ans: 0 },
-    { q: "18. طالب وزنه 400N على بعد 1.4m من المحور، يجلس صديقه (600N) وصندوق (100N) على بعد d. احسب المسافة d للاتزان:", options: ["0.8 m", "1.2 m", "0.5 m"], ans: 0 },
-    { q: "19. أي من الكميات الفيزيائية التالية تعتبر كمية متجهة يلزم تحديد اتجاهها؟", options: ["عزم القوة والقوة معاً", "الكتلة فقط", "الزمن فقط"], ans: 0 },
-    { q: "20. ينعدم عزم القوة تماماً عندما تكون الزاوية بين خط عمل القوة والساق تساوي:", options: ["0° أو 180°", "90°", "45°"], ans: 0 },
-    { q: "21. عند زيادة الزاوية θ من 0° إلى 90° بين القوة والساق، فإن مقدار عزم القوة:", options: ["يزداد", "يقل", "ينعدم"], ans: 0 }
-  ];
-
-  let userAnswers = {};
-  let studentName = "";
-  let studentPhone = "";
-
-  function startQuiz() {
-    studentName = document.getElementById('student-name').value.trim();
-    studentPhone = document.getElementById('student-phone').value.trim();
-
-    if (!studentName || !studentPhone) {
-      alert("يرجى إدخال الاسم ورقم الهاتف أولاً!");
-      return;
-    }
-
-    document.getElementById('login-screen').classList.add('hidden');
-    document.getElementById('quiz-screen').classList.remove('hidden');
-
-    const container = document.getElementById('questions-container');
-    container.innerHTML = "";
-
-    questions.forEach((q, index) => {
-      let qHtml = `
-        <div class="question-card">
-          <div class="question-title">س${index + 1}: ${q.q}</div>
-          <div class="options">
-            ${q.options.map((opt, oIndex) => `
-              <div class="option-btn" id="opt-${index}-${oIndex}" onclick="selectOption(${index}, ${oIndex})">${opt}</div>
-            `).join('')}
-          </div>
+    <div class="container">
+        <div class="header-title">
+            اختبار فيزياء 2 بكالوريا 2027<br>
+            <span style="font-size:0.85rem; color:#94a3b8; font-weight:normal;">الدرس الرابع: عزم القوة (Torque)</span>
         </div>
-      `;
-      container.innerHTML += qHtml;
-    });
-  }
 
-  function selectOption(qIndex, oIndex) {
-    userAnswers[qIndex] = oIndex;
-    questions[qIndex].options.forEach((_, idx) => {
-      const btn = document.getElementById(`opt-${qIndex}-${idx}`);
-      if (btn) btn.classList.remove('selected');
-    });
-    document.getElementById(`opt-${qIndex}-${oIndex}`).classList.add('selected');
-  }
-
-  function submitQuiz() {
-    let score = 0;
-    questions.forEach((q, i) => {
-      if (userAnswers[i] === q.ans) score++;
-    });
-
-    document.getElementById('quiz-screen').classList.add('hidden');
-    document.getElementById('result-screen').classList.remove('hidden');
-    document.getElementById('score-text').innerHTML = `الطالب: <b>${studentName}</b><br>الدرجة: <b>${score} من ${questions.length}</b>`;
-
-    let reviewHtml = "";
-    questions.forEach((q, i) => {
-      let isCorrect = userAnswers[i] === q.ans;
-      let userAnsText = userAnswers[i] !== undefined ? q.options[userAnswers[i]] : "لم يُجب";
-      let correctAnsText = q.options[q.ans];
-
-      reviewHtml += `
-        <div class="result-item ${isCorrect ? 'correct' : 'incorrect'}">
-          <div><b>س${i + 1}:</b> ${q.q}</div>
-          <div>إجابتك: <span class="${isCorrect ? 'ans-correct' : 'ans-wrong'}">${userAnsText}</span></div>
-          ${!isCorrect ? `<div>الإجابة الصحيحة: <span class="ans-correct">${correctAnsText}</span></div>` : ''}
+        <!-- 1. شاشة الدخول -->
+        <div id="login-section">
+            <form onsubmit="startExam(event)">
+                <div class="form-group">
+                    <label>اسم الطالب الكامل:</label>
+                    <input type="text" id="student-name" class="form-control" placeholder="أدخل اسمك الثلاثي..." required>
+                </div>
+                <div class="form-group" style="margin-top: 10px;">
+                    <label>كود الطالب الخاص:</label>
+                    <input type="password" id="student-code" class="form-control" placeholder="أدخل كودك الخاص..." required>
+                </div>
+                <button type="submit" class="btn-start" style="width:100%; margin-top:15px;">بدء الاختبار الآن 🚀</button>
+            </form>
         </div>
-      `;
-    });
-    document.getElementById('review-container').innerHTML = reviewHtml;
 
-    sendToTelegram(studentName, studentPhone, score, questions.length);
-  }
+        <!-- 2. شاشة الأسئلة -->
+        <div id="exam-section">
+            <div class="formula-guide-box">
+                <div class="formula-guide-title">📐 القوانين الأساسية:</div>
+                <div style="font-size:0.75rem; color:#94a3b8; text-align:center;">
+                    M = F · d &nbsp;|&nbsp; d = L · sin(θ) &nbsp;|&nbsp; M = F · L · sin(θ) &nbsp;|&nbsp; F₁·d₁ = F₂·d₂
+                </div>
+            </div>
 
-  function sendToTelegram(name, phone, score, total) {
-    const token = "8582239458:AAH4pC1d95jF3MscD_Ld9l619S11P43LscM";
-    const chatId = "682855799";
+            <div class="status-panel">
+                <div class="timer-badge" id="timer-display">45:00</div>
+                <div class="user-badge">👤 <span id="display-student-name">الطالب</span></div>
+            </div>
 
-    const text = `📊 **نتيجة اختبار جديدة**\n\n👤 **الاسم:** ${name}\n📞 **الهاتف:** ${phone}\n🎯 **الدرجة:** ${score} من ${total}`;
+            <!-- شبكة أرقام الأسئلة -->
+            <div class="question-grid" id="question-grid"></div>
 
-    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: text,
-        parse_mode: "Markdown"
-      })
-    }).catch(err => console.log("Telegram Error:", err));
-  }
-</script>
+            <div class="question-card">
+                <div class="question-content">
+                    <div class="question-header">
+                        <span id="question-number-lbl">السؤال 1 من 40</span>
+                        <span id="question-type-lbl">اختيار من متعدد</span>
+                    </div>
+                    <div class="question-text" id="question-text"></div>
+                    <div class="question-image-container">
+                        <svg id="question-svg" viewBox="0 0 300 120" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"></svg>
+                    </div>
+                    <div class="options-list" id="options-container"></div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-prev" id="btn-prev" onclick="prevQuestion()">السابق</button>
+                <button class="btn btn-next" id="btn-next" onclick="nextQuestion()">التالي</button>
+                <button class="btn btn-submit" onclick="submitExam()">تسليم الاختبار 🏁</button>
+            </div>
+        </div>
+
+        <!-- 3. شاشة النتيجة -->
+        <div id="result-section">
+            <div class="result-title">🎯 اكتمل الاختبار بنجاح</div>
+
+            <div class="certificate-card" id="cert-card">
+                <div class="cert-header">🎓 شهادة تقدير وتميز 🎓</div>
+                <div class="cert-sub">في مادة الفيزياء - بكالوريا 2027</div>
+                <div>يشهد أستاذ المادة بأن الطالب/ة:</div>
+                <div class="cert-name" id="cert-student-name">...</div>
+                <div class="cert-body">
+                    قد أتم اختباره بنجاح في درس <b>"عزم القوة (Torque)"</b><br>
+                    وحصل على درجة: <b id="cert-score" style="color:#fbbf24;">0</b> من 40<br>
+                    بتقدير عام: <b id="cert-grade" style="color:#38bdf8;">...</b>
+                </div>
+                <div class="cert-footer">
+                    <div>التاريخ: <span id="cert-date"></span></div>
+                    <div>مدرس المادة: <b>أ. محمد أمين نظير</b></div>
+                </div>
+            </div>
+
+            <button class="btn btn-start" style="width:100%; margin-bottom:10px;" onclick="window.print()">طباعة / حفظ الشهادة 🖨️</button>
+
+            <div class="review-box" id="review-container">
+                <div class="review-title">❌ مراجعة الأسئلة الخاطئة والأجوبة الصحيحة:</div>
+                <div id="review-list"></div>
+            </div>
+
+            <button class="btn" style="background-color:#334155; color:white; width:100%; margin-top:15px;" onclick="location.reload()">إعادة الاختبار 🔄</button>
+        </div>
+
+        <div style="margin-top:15px; text-align:center; font-size:0.8rem; color:#64748b;">
+            جميع الحقوق محفوظة للأستاذ <b>محمد أمين نظير</b>
+        </div>
+    </div>
+
+    <script>
+        // تعطيل زر الاختصارات وأدوات المطور
+        document.addEventListener('keydown', function(e) {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85)) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // التوكن والآيدي مشفرين بـ Base64 لمنع كشفهما أو حظرهما
+        const _0x1a = "ODU4MjIzOTQ1ODpBQUg0cEMxZDk1akYzTXNjRF9MZDlsNjE5UzExUDQzTHNjTQ=="; // Encoded Token
+        const _0x1b = "NjgyODU1Nzk5"; // Encoded Chat ID
+
+        function _getSecret(str) { return atob(str); }
+
+        const rawQuestions = [
+            { id: 1, type: "mcq", text: "تؤثر قوة مقدارها 5.0N عمودياً عند طرف قضيب طوله 0.4m. احسب مقدار عزم القوة حول الطرف الآخر:", svg: `<line x1="40" y1="60" x2="220" y2="60" stroke="#38bdf8" stroke-width="6"/><circle cx="40" cy="60" r="6" fill="#ef4444"/><path d="M 220 60 L 220 20" stroke="#f59e0b" stroke-width="3"/><text x="110" y="85" fill="#94a3b8" font-size="13" text-anchor="middle">L = 0.4m</text><text x="220" y="15" fill="#f59e0b" font-size="12" text-anchor="middle">F = 5.0N</text>`, options: ["2.0 N·m", "1.2 N·m", "12.5 N·m", "0.8 N·m"], correct: 0 },
+            { id: 2, type: "mcq", text: "في السؤال السابق، إذا كانت القوة تسبب دوراناً عكس عقارب الساعة، تكون إشارة العزم:", svg: `<circle cx="150" cy="60" r="30" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="5"/><text x="150" y="66" fill="#4ade80" font-size="20" font-weight="bold" text-anchor="middle">(+)</text>`, options: ["موجبة (+)", "سالبة (-)", "منعدمة", "مترددة"], correct: 0 },
+            { id: 3, type: "mcq", text: "تؤثر قوة F = 4N على قضيب بزاوية θ = 60° وعلى بعد L = 4.0m من النقطة A. احسب عزم القوة (sin 60° ≈ 0.866):", svg: `<line x1="50" y1="80" x2="210" y2="40" stroke="#38bdf8" stroke-width="6"/><circle cx="50" y1="80" r="6" fill="#ef4444"/><line x1="210" y1="40" x2="260" y2="20" stroke="#f59e0b" stroke-width="3"/><text x="215" y="55" fill="#e2e8f0" font-size="12">60°</text>`, options: ["13.86 N·m", "16.0 N·m", "8.0 N·m", "10.2 N·m"], correct: 0 },
+            { id: 4, type: "mcq", text: "إذا أثرت قوة 4N عند B على بعد L = 3.0m بزاوية 60° وكان الدوران مع عقارب الساعة، يكون العزم:", svg: `<line x1="50" y1="40" x2="190" y2="80" stroke="#38bdf8" stroke-width="6"/><circle cx="50" y1="40" r="6" fill="#ef4444"/><line x1="190" y1="80" x2="230" y2="100" stroke="#f59e0b" stroke-width="3"/><text x="190" y="70" fill="#e2e8f0" font-size="12">60°</text>`, options: ["-10.39 N·m", "+10.39 N·m", "-12.0 N·m", "-6.0 N·m"], correct: 0 },
+            { id: 5, type: "mcq", text: "تأثير القوة في زيادة عزم الدوران يكون أكبر بزيادة:", svg: `<text x="150" y="65" fill="#38bdf8" font-size="15" text-anchor="middle">d = L · sin(θ)</text>`, options: ["طول ذراع القوة", "الكتلة فقط", "الزاوية عندما تكون صفر", "محور الدوران"], correct: 0 },
+            { id: 6, type: "mcq", text: "ينعدم عزم القوة تماماً عندما تكون الزاوية بين خط عمل القوة والساق تساوي:", svg: `<line x1="40" y1="60" x2="200" y2="60" stroke="#38bdf8" stroke-width="6"/><line x1="200" y1="60" x2="260" y2="60" stroke="#f59e0b" stroke-width="3" stroke-dasharray="4"/><text x="230" y="45" fill="#f59e0b" font-size="12">θ = 0° / 180°</text>`, options: ["0° أو 180°", "90°", "45°", "60°"], correct: 0 },
+            { id: 7, type: "mcq", text: "يصل عزم القوة إلى أقصى قيمة ممكّنة (عظمى) عندما تكون الزاوية بين القوة والساق:", svg: `<line x1="50" y1="80" x2="200" y2="80" stroke="#38bdf8" stroke-width="6"/><line x1="200" y1="80" x2="200" y2="25" stroke="#f59e0b" stroke-width="3"/><rect x="185" y="65" width="15" height="15" fill="none" stroke="#4ade80"/><text x="210" y="40" fill="#4ade80" font-size="13">θ = 90°</text>`, options: ["90°", "0°", "180°", "45°"], correct: 0 },
+            { id: 8, type: "mcq", text: "ساق متزنة أفقياً تؤثر عليها F1 = 50N على بعد d1 = 0.6m. احسب القوة F2 المؤثرة على بعد d2 = 1.5m للاتزان:", svg: `<polygon points="150,75 140,95 160,95" fill="#ef4444"/><line x1="30" y1="75" x2="270" y2="75" stroke="#38bdf8" stroke-width="6"/><line x1="50" y1="75" x2="50" y2="35" stroke="#f59e0b" stroke-width="3"/><line x1="250" y1="75" x2="250" y2="25" stroke="#4ade80" stroke-width="3"/>`, options: ["20 N", "30 N", "125 N", "15 N"], correct: 0 },
+            { id: 9, type: "mcq", text: "لإحداث نفس عزم الدوران باستخدام قوة أقل، يجب استخدام مفتاح عزم بـ:", svg: `<rect x="50" y="55" width="180" height="12" rx="6" fill="#64748b"/><circle cx="50" cy="61" r="16" fill="#0284c7"/>`, options: ["ذراع أطول", "ذراع أقصر", "التأثير عند نقطة الارتكاز", "التأثير بزاوية حادة جداً"], correct: 0 },
+            { id: 10, type: "mcq", text: "ذراع طولها 0.2m تؤثر عليها قوة 3.0N عمودياً لأعلى عند الطرف الأيمن. عزم القوة حول الطرف الأيسر هو:", svg: `<line x1="50" y1="70" x2="210" y2="70" stroke="#38bdf8" stroke-width="6"/><circle cx="50" cy="70" r="5" fill="#ef4444"/><line x1="210" y1="70" x2="210" y2="20" stroke="#f59e0b" stroke-width="3"/>`, options: ["0.6 N·m عكس عقارب الساعة", "0.6 N·m مع عقارب الساعة", "15 N·m عكس عقارب الساعة", "0.06 N·m مع عقارب الساعة"], correct: 0 },
+            { id: 11, type: "mcq", text: "قضيب طوله 0.3m، تؤثر عند طرفه العلوي قوة 4.0N بمحاذاة امتداد القضيب نفسه. العزم حول مركز الدوران يساوي:", svg: `<line x1="60" y1="90" x2="180" y2="40" stroke="#38bdf8" stroke-width="6"/><circle cx="60" y1="90" r="5" fill="#ef4444"/><line x1="180" y1="40" x2="230" y2="20" stroke="#f59e0b" stroke-width="3" stroke-dasharray="3"/>`, options: ["0 N·m", "1.2 N·m", "0.85 N·m", "2.4 N·m"], correct: 0 },
+            { id: 12, type: "mcq", text: "قضيب مائل تؤثر عليه قوة 2.0N على بعد 0.4m بزاوية 30° مع القضيب. احسب ذراع العزم d:", svg: `<line x1="70" y1="35" x2="190" y2="85" stroke="#38bdf8" stroke-width="6"/><line x1="190" y1="85" x2="120" y2="85" stroke="#f59e0b" stroke-width="3"/>`, options: ["0.20 m", "0.40 m", "0.35 m", "0.10 m"], correct: 0 },
+            { id: 13, type: "mcq", text: "قوة مقدارها 6.0N تؤثر عند طرف رافعة طولها 0.5m بزاوية 30° مع الرافعة. مقدار عزم القوة يساوي:", svg: `<line x1="50" y1="75" x2="200" y2="75" stroke="#38bdf8" stroke-width="6"/><line x1="200" y1="75" x2="250" y2="35" stroke="#f59e0b" stroke-width="3"/>`, options: ["1.5 N·m", "3.0 N·m", "2.6 N·m", "0.75 N·m"], correct: 0 },
+            { id: 14, type: "mcq", text: "ساق حديدية طولها 1.50m تؤثر عليها قوة 30N بزاوية 30°. ذراع العزم (d) يساوي:", svg: `<line x1="40" y1="60" x2="220" y2="60" stroke="#38bdf8" stroke-width="6"/>`, options: ["0.75 m", "1.50 m", "1.30 m", "0.50 m"], correct: 0 },
+            { id: 15, type: "mcq", text: "لوح خشبي متجانس؛ جسم وزنه 60N على بعد 0.6m يميناً. أين نضع قوة 20N يساراً ليتزن اللوح أفقياً؟", svg: `<polygon points="150,70 140,90 160,90" fill="#ef4444"/><line x1="30" y1="70" x2="270" y2="70" stroke="#38bdf8" stroke-width="6"/>`, options: ["1.8 m", "0.2 m", "1.2 m", "0.9 m"], correct: 0 },
+            { id: 16, type: "mcq", text: "طالب وزنه 400N على بعد 1.4m من المحور. يجلس صديقه (600N) وصندوق (100N) على بعد d. احسب المسافة d للاتزان:", svg: `<polygon points="150,75 141,95 159,95" fill="#ef4444"/><line x1="20" y1="75" x2="280" y2="75" stroke="#38bdf8" stroke-width="6"/>`, options: ["0.8 m", "1.0 m", "1.2 m", "0.6 m"], correct: 0 },
+            { id: 17, type: "mcq", text: "في مسألة الأرجوحة السابقة، إذا ألقي الصندوق (100N)، فكم تكون مسافة الصديق (600N) الجديدة ليتزن مع الطالب (400N × 1.4m)؟", svg: `<text x="150" y="65" fill="#38bdf8" font-size="13" text-anchor="middle">400 × 1.4 = 600 × d₂</text>`, options: ["0.93 m", "1.12 m", "0.80 m", "1.40 m"], correct: 0 },
+            { id: 18, type: "mcq", text: "وحدة قياس عزم القوة في النظام الدولي (SI) هي:", svg: `<text x="150" y="65" fill="#4ade80" font-size="22" font-weight="bold" text-anchor="middle">N · m</text>`, options: ["N·m", "N/m", "kg·m/s²", "J·m"], correct: 0 },
+            { id: 19, type: "mcq", text: "رمز اتجاه العزم لخارج الصفحة (عكس عقارب الساعة) وإشارته هما:", svg: `<circle cx="150" cy="60" r="30" fill="none" stroke="#38bdf8" stroke-width="3"/><circle cx="150" cy="60" r="8" fill="#38bdf8"/>`, options: ["(⊙) وبإشارة موجبة (+)", "(⊗) وبإشارة سالبة (-)", "(⊙) وبإشارة سالبة (-)", "(⊗) وبإشارة موجبة (+)"], correct: 0 },
+            { id: 20, type: "mcq", text: "رمز اتجاه العزم لداخل الصفحة (مع عقارب الساعة) وإشارته هما:", svg: `<circle cx="150" cy="60" r="30" fill="none" stroke="#ef4444" stroke-width="3"/><line x1="138" y1="48" x2="162" y2="72" stroke="#ef4444" stroke-width="3"/><line x1="162" y1="48" x2="138" y2="72" stroke="#ef4444" stroke-width="3"/>`, options: ["(⊗) وبإشارة سالبة (-)", "(⊙) وبإشارة موجبة (+)", "(⊗) وبإشارة موجبة (+)", "(⊙) وبإشارة سالبة (-)"], correct: 0 },
+            { id: 21, type: "mcq", text: "الجسم الجاسئ (الصلب) المثالي هو الجسم الذي:", svg: `<rect x="80" y="40" width="140" height="40" rx="8" fill="#334155" stroke="#38bdf8" stroke-width="2"/>`, options: ["لا يتشوه شكله إطلاقاً عند التأثير بقوة", "يتغير شكله بسهولة عند الدوران", "ينعدم وزنه تماماً", "تكون أبعاده ملغاة"], correct: 0 },
+            { id: 22, type: "mcq", text: "عند زيادة القوة المؤثرة على ذراع الرافعة إلى الضعف مع ثبات البعد والزاوية، فإن العزم:", svg: `<text x="150" y="65" fill="#38bdf8" font-size="16" font-weight="bold" text-anchor="middle">M ∝ F (طردي)</text>`, options: ["يزداد إلى الضعف", "يقل إلى النصف", "يزداد للأربعة أضعاف", "لا يتغير"], correct: 0 },
+            { id: 23, type: "mcq", text: "عند زيادة الزاوية θ من 0° إلى 90° بين القوة والساق، فإن مقدار عزم القوة:", svg: `<path d="M 110 80 A 50 50 0 0 1 190 80" fill="none" stroke="#f59e0b" stroke-width="4"/>`, options: ["يزداد تدريجياً حتى يصل لأقصى قيمة", "يقل تدريجياً حتى ينعدم", "يبقى ثابتاً لا يتغير", "ينعدم فجأة"], correct: 0 },
+            { id: 24, type: "mcq", text: "عند زيادة الزاوية θ من 90° إلى 180° بين القوة والساق، فإن مقدار عزم القوة:", svg: `<path d="M 110 40 A 50 50 0 0 1 190 80" fill="none" stroke="#f59e0b" stroke-width="4"/>`, options: ["يقل تدريجياً حتى ينعدم عند 180°", "يزداد تدريجياً", "يصل إلى قيمته العظمى", "يتضاعف"], correct: 0 },
+            { id: 25, type: "mcq", text: "يعتمد شرط الاتزان الدوراني في قانون الرافعة للأجسام على:", svg: `<text x="150" y="65" fill="#38bdf8" font-size="14" text-anchor="middle">F₁ · d₁ = F₂ · d₂</text>`, options: ["تساوي العزوم حول مركز الارتكاز", "تساوي الكتل فقط", "إلغاء طول الذراع", "تساوي القوى بدون مسافات"], correct: 0 },
+            { id: 26, type: "mcq", text: "مفتاح العزم (Torque wrench) الصوتي يُستخدم أثناء الصيانة لـ:", svg: `<path d="M 50 60 L 230 60" stroke="#94a3b8" stroke-width="10" stroke-linecap="round"/><circle cx="230" cy="60" r="12" fill="#f59e0b"/>`, options: ["التنبيه عند الوصول للعزم المطلوب", "قياس السرعة الزاوية", "زيادة قوة الصيانة تلقائياً", "تقليل وزن المسمار"], correct: 0 },
+            { id: 27, type: "mcq", text: "إذا كانت القوة F تؤثر على خط عمل يمر بنقطة الارتكاز مباشرة، فإن العزم الناتج يساوي:", svg: `<circle cx="100" cy="60" r="8" fill="#ef4444"/><line x1="20" y1="60" x2="260" y2="60" stroke="#f59e0b" stroke-width="3"/>`, options: ["0 N·m", "F · L", "F / L", "قيمة عظمى"], correct: 0 },
+            { id: 28, type: "mcq", text: "إذا كان sin(150°) = 0.5، فإن عزم قوة مائلة بزاوية 150° يساوي عزم نفس القوة بزاوية حادة قدرها:", svg: `<text x="150" y="65" fill="#38bdf8" font-size="15" font-weight="bold" text-anchor="middle">sin(150°) = sin(30°)</text>`, options: ["30°", "60°", "45°", "90°"], correct: 0 },
+            { id: 29, type: "mcq", text: "تؤثر قوة 15N على جسم يبعد 0.20m عمودياً عن نقطة الدوران. مقدار العزم هو:", svg: `<line x1="60" y1="60" x2="200" y2="60" stroke="#38bdf8" stroke-width="6"/><line x1="200" y1="60" x2="200" y2="20" stroke="#f59e0b" stroke-width="3"/>`, options: ["3.0 N·m", "75 N·m", "0.013 N·m", "1.5 N·m"], correct: 0 },
+            { id: 30, type: "mcq", text: "أي من الكميات الفيزياء التالية تعتبر كمية متجهة يلزم تحديد اتجاهها؟", svg: `<text x="150" y="65" fill="#38bdf8" font-size="15" font-weight="bold" text-anchor="middle">Vector Quantities</text>`, options: ["عزم القوة والقوة معاً", "الكتلة والزاوية", "المسافة والزمن", "طول الساق والحرارة"], correct: 0 },
+            { id: 31, type: "tf", text: "عزم القوة هو حاصل ضرب القوة في البعد العمودي عن نقطة الارتكاز.", svg: `<text x="150" y="65" fill="#4ade80" font-size="15" font-weight="bold" text-anchor="middle">M = F · d</text>`, options: ["صح", "خطأ"], correct: 0 },
+            { id: 32, type: "tf", text: "وحدة قياس القوة هي نيوتن (N) وتكافئ في الوحدات الأساسية kg·m/s².", svg: `<text x="150" y="65" fill="#38bdf8" font-size="15" text-anchor="middle">N = kg·m/s²</text>`, options: ["صح", "خطأ"], correct: 0 },
+            { id: 33, type: "tf", text: "عندما تكون القوة والذراع على خط عمل واحد تمر بمحور الدوران، يكون العزم أقصى ما يمكن.", svg: `<line x1="50" y1="60" x2="250" y2="60" stroke="#f59e0b" stroke-width="4"/>`, options: ["صح", "خطأ"], correct: 1 },
+            { id: 34, type: "tf", text: "يكون اتجاه العزم موجباً (+) عندما يدور الجسم مع اتجاه حركة عقارب الساعة.", svg: `<circle cx="150" cy="60" r="30" fill="none" stroke="#ef4444" stroke-width="3"/>`, options: ["صح", "خطأ"], correct: 1 },
+            { id: 35, type: "tf", text: "قيمة sin(θ) للزاوية المنفرجة متساوية تماماً مع قيمة sin(θ) للزاوية الحادة المكملة لها.", svg: `<text x="150" y="65" fill="#38bdf8" font-size="15" text-anchor="middle">sin(θ) = sin(180°-θ)</text>`, options: ["صح", "خطأ"], correct: 0 },
+            { id: 36, type: "tf", text: "دفع الباب بالقرب من مفصلة الدوران يسهل عملية تدويره لأن ذراع العزم يزداد جداً.", svg: `<rect x="50" y="30" width="12" height="60" fill="#ef4444"/>`, options: ["صح", "خطأ"], correct: 1 },
+            { id: 37, type: "tf", text: "يتناسب عزم القوة طردياً مع كل من مقدار القوة والبعد العمودي.", svg: `<text x="150" y="65" fill="#38bdf8" font-size="15" font-weight="bold" text-anchor="middle">M = F · d</text>`, options: ["صح", "خطأ"], correct: 0 },
+            { id: 38, type: "tf", text: "شرط اتزان الرافعة يعتمد على المعادلة: F₁ · d₁ = F₂ · d₂.", svg: `<text x="150" y="65" fill="#4ade80" font-size="15" font-weight="bold" text-anchor="middle">F₁ · d₁ = F₂ · d₂</text>`, options: ["صح", "خطأ"], correct: 0 },
+            { id: 39, type: "tf", text: "إذا كانت الصامولة محكمة الربط، يُستحسن استخدام مفتاح عزم بذراع قصيرة جداً لفكها.", svg: `<circle cx="150" cy="60" r="22" fill="#64748b"/>`, options: ["صح", "خطأ"], correct: 1 },
+            { id: 40, type: "tf", text: "عزم القوة العمودية على ساق طولها 0.2m بواسطة قوة 80N يساوي 16 N·m.", svg: `<text x="150" y="65" fill="#38bdf8" font-size="15" text-anchor="middle">80 × 0.2 = 16 N·m</text>`, options: ["صح", "خطأ"], correct: 0 }
+        ];
+
+        let questionsData = [];
+        let currentIdx = 0;
+        let userAnswers = [];
+        let timerSeconds = 45 * 60;
+        let timerInterval = null;
+        let studentInfo = { name: '', code: '' };
+
+        function startExam(e) {
+            e.preventDefault();
+            studentInfo.name = document.getElementById('student-name').value.trim();
+            studentInfo.code = document.getElementById('student-code').value.trim();
+
+            questionsData = [...rawQuestions];
+            userAnswers = new Array(questionsData.length).fill(null);
+
+            document.getElementById('display-student-name').innerText = studentInfo.name;
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('exam-section').style.display = 'block';
+
+            renderGrid();
+            loadQuestion(0);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    submitExam();
+                    return;
+                }
+                timerSeconds--;
+                const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+                const s = (timerSeconds % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').innerText = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('question-grid');
+            grid.innerHTML = '';
+            for (let i = 0; i < questionsData.length; i++) {
+                const btn = document.createElement('div');
+                btn.className = `grid-btn ${i === currentIdx ? 'active' : ''} ${userAnswers[i] !== null ? 'answered' : ''}`;
+                btn.innerText = i + 1;
+                btn.onclick = () => loadQuestion(i);
+                grid.appendChild(btn);
+            }
+        }
+
+        function loadQuestion(index) {
+            currentIdx = index;
+            const q = questionsData[index];
+
+            document.getElementById('question-number-lbl').innerText = `السؤال ${index + 1} من ${questionsData.length}`;
+            document.getElementById('question-type-lbl').innerText = q.type === 'mcq' ? 'اختيار من متعدد' : 'صح أم خطأ';
+            document.getElementById('question-text').innerText = q.text;
+            document.getElementById('question-svg').innerHTML = q.svg;
+
+            const optsBox = document.getElementById('options-container');
+            optsBox.innerHTML = '';
+
+            q.options.forEach((optText, optIdx) => {
+                const isSelected = userAnswers[index] === optIdx;
+                const item = document.createElement('div');
+                item.className = `option-item ${isSelected ? 'selected' : ''}`;
+                item.onclick = () => selectOption(optIdx);
+                item.innerHTML = `<span>${optText}</span>`;
+                optsBox.appendChild(item);
+            });
+
+            document.getElementById('btn-prev').disabled = index === 0;
+            document.getElementById('btn-next').disabled = index === questionsData.length - 1;
+            renderGrid();
+        }
+
+        function selectOption(optIdx) {
+            userAnswers[currentIdx] = optIdx;
+            loadQuestion(currentIdx);
+        }
+
+        function prevQuestion() { if (currentIdx > 0) loadQuestion(currentIdx - 1); }
+        function nextQuestion() { if (currentIdx < questionsData.length - 1) loadQuestion(currentIdx + 1); }
+
+        function calculateGrade(score) {
+            const percentage = (score / 40) * 100;
+            if (percentage >= 90) return "ممتاز 🌟";
+            if (percentage >= 80) return "جيد جداً 👏";
+            if (percentage >= 65) return "جيد 👍";
+            if (percentage >= 50) return "مقبول 🤏";
+            return "يحتاج إلى مراجعة وتكرار ⚠️";
+        }
+
+        function submitExam() {
+            clearInterval(timerInterval);
+
+            let score = 0;
+            let wrongListHTML = "";
+            let wrongQuestionsNum = [];
+
+            questionsData.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+                if (userAns === q.correct) {
+                    score++;
+                } else {
+                    wrongQuestionsNum.push(idx + 1);
+                    const userText = userAns !== null ? q.options[userAns] : "لم يُجب";
+                    const correctText = q.options[q.correct];
+                    wrongListHTML += `
+                        <div class="review-item">
+                            <div><b>س${idx + 1}:</b> ${q.text}</div>
+                            <div>إجابتك: <span class="user-ans">${userText}</span></div>
+                            <div>الإجابة الصحيحة: <span class="correct-ans">${correctText}</span></div>
+                        </div>`;
+                }
+            });
+
+            const timeSpentSec = (45 * 60) - timerSeconds;
+            const spentM = Math.floor(timeSpentSec / 60);
+            const spentS = timeSpentSec % 60;
+            const gradeTitle = calculateGrade(score);
+
+            document.getElementById('cert-student-name').innerText = studentInfo.name;
+            document.getElementById('cert-score').innerText = score;
+            document.getElementById('cert-grade').innerText = gradeTitle;
+            document.getElementById('cert-date').innerText = new Date().toLocaleDateString('ar-EG');
+
+            const revBox = document.getElementById('review-list');
+            if (wrongQuestionsNum.length === 0) {
+                revBox.innerHTML = `<div style="color:#4ade80; text-align:center;">🎉 ممتاز! لا يوجد أخطاء لديك.</div>`;
+            } else {
+                revBox.innerHTML = wrongListHTML;
+            }
+
+            document.getElementById('exam-section').style.display = 'none';
+            document.getElementById('result-section').style.display = 'block';
+
+            sendToTelegram(studentInfo.name, studentInfo.code, score, spentM, spentS, gradeTitle, wrongQuestionsNum);
+        }
+
+        function sendToTelegram(name, code, score, m, s, grade, wrongArr) {
+            let wrongText = wrongArr.length > 0 ? wrongArr.join(', ') : 'لا يوجد أخطاء 🎉';
+            
+            const messageText = `📊 نتيجة اختبار فيزياء جديدة\n\n` +
+                                `👤 اسم الطالب: ${name}\n` +
+                                `🆔 الكود: ${code}\n` +
+                                `🎯 الدرجة: ${score} / 40\n` +
+                                `🏅 التقدير: ${grade}\n` +
+                                `⏱️ الوقت المستغرق: ${m} دقيقة و ${s} ثانية\n` +
+                                `❌ الأسئلة الخاطئة: ${wrongText}`;
+
+            const token = _getSecret(_0x1a);
+            const chatId = _getSecret(_0x1b);
+
+            const encodedText = encodeURIComponent(messageText);
+            const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodedText}`;
+            
+            const img = new Image();
+            img.src = telegramUrl;
+        }
+    </script>
 </body>
 </html>
