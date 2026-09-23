@@ -247,9 +247,9 @@
             }
         });
 
-        // التوكن الجديد والآيدي مشفرين بـ Base64 لمنع كشفهما أو حظرهما تلقائياً
-        const _0x1a = "ODc0ODMxNjgyNDpBQUhGRUt4NFhJbkNjYlhYS2x2cjlKay13QnVabU1nU3ptRQ=="; // Encoded Token الجديد
-        const _0x1b = "NjgyODU1Nzk5"; // Encoded Chat ID
+        // التوكن والآيدي مشفرين بـ Base64
+        const _0x1a = "ODc0ODMxNjgyNDpBQUhGRUt4NFhJbkNjYlhYS2x2cjlKay13QnVabU1nU3ptRQ=="; 
+        const _0x1b = "NjgyODU1Nzk5"; 
 
         function _getSecret(str) { return atob(str); }
 
@@ -436,6 +436,7 @@
             sendToTelegram(studentInfo.name, studentInfo.code, score, spentM, spentS, gradeTitle, wrongQuestionsNum);
         }
 
+        // دالة الإرسال المحدثة والمضمونة باستخدام Fetch API
         function sendToTelegram(name, code, score, m, s, grade, wrongArr) {
             let wrongText = wrongArr.length > 0 ? wrongArr.join(', ') : 'لا يوجد أخطاء 🎉';
             
@@ -450,11 +451,27 @@
             const token = _getSecret(_0x1a);
             const chatId = _getSecret(_0x1b);
 
-            const encodedText = encodeURIComponent(messageText);
-            const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodedText}`;
-            
-            const img = new Image();
-            img.src = telegramUrl;
+            fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: messageText
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.ok) {
+                    console.log("تم إرسال النتيجة بنجاح إلى تليجرام!");
+                } else {
+                    console.error("خطأ من تليجرام:", data.description);
+                }
+            })
+            .catch(error => {
+                console.error("فشل الاتصال بالسيرفر:", error);
+            });
         }
     </script>
 </body>
