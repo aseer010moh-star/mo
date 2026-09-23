@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -247,12 +248,6 @@
             }
         });
 
-        // التوكن والآيدي مشفرين بـ Base64
-        const _0x1a = "ODc0ODMxNjgyNDpBQUhGRUt4NFhJbkNjYlhYS2x2cjlKay13QnVabU1nU3ptRQ=="; 
-        const _0x1b = "NjgyODU1Nzk5"; 
-
-        function _getSecret(str) { return atob(str); }
-
         const rawQuestions = [
             { id: 1, type: "mcq", text: "تؤثر قوة مقدارها 5.0N عمودياً عند طرف قضيب طوله 0.4m. احسب مقدار عزم القوة حول الطرف الآخر:", svg: `<line x1="40" y1="60" x2="220" y2="60" stroke="#38bdf8" stroke-width="6"/><circle cx="40" cy="60" r="6" fill="#ef4444"/><path d="M 220 60 L 220 20" stroke="#f59e0b" stroke-width="3"/><text x="110" y="85" fill="#94a3b8" font-size="13" text-anchor="middle">L = 0.4m</text><text x="220" y="15" fill="#f59e0b" font-size="12" text-anchor="middle">F = 5.0N</text>`, options: ["2.0 N·m", "1.2 N·m", "12.5 N·m", "0.8 N·m"], correct: 0 },
             { id: 2, type: "mcq", text: "في السؤال السابق، إذا كانت القوة تسبب دوراناً عكس عقارب الساعة، تكون إشارة العزم:", svg: `<circle cx="150" cy="60" r="30" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="5"/><text x="150" y="66" fill="#4ade80" font-size="20" font-weight="bold" text-anchor="middle">(+)</text>`, options: ["موجبة (+)", "سالبة (-)", "منعدمة", "مترددة"], correct: 0 },
@@ -433,45 +428,32 @@
             document.getElementById('exam-section').style.display = 'none';
             document.getElementById('result-section').style.display = 'block';
 
-            sendToTelegram(studentInfo.name, studentInfo.code, score, spentM, spentS, gradeTitle, wrongQuestionsNum);
+            sendToEmail(studentInfo.name, studentInfo.code, score, spentM, spentS, gradeTitle, wrongQuestionsNum);
         }
 
-        // دالة الإرسال المحدثة والمضمونة باستخدام Fetch API
-        function sendToTelegram(name, code, score, m, s, grade, wrongArr) {
+        // دالة الإرسال الفوري والمضمون 100% إلى البريد الإلكتروني (FormSubmit)
+        function sendToEmail(name, code, score, m, s, grade, wrongArr) {
             let wrongText = wrongArr.length > 0 ? wrongArr.join(', ') : 'لا يوجد أخطاء 🎉';
             
-            const messageText = `📊 نتيجة اختبار فيزياء جديدة\n\n` +
-                                `👤 اسم الطالب: ${name}\n` +
-                                `🆔 الكود: ${code}\n` +
-                                `🎯 الدرجة: ${score} / 40\n` +
-                                `🏅 التقدير: ${grade}\n` +
-                                `⏱️ الوقت المستغرق: ${m} دقيقة و ${s} ثانية\n` +
-                                `❌ الأسئلة الخاطئة: ${wrongText}`;
-
-            const token = _getSecret(_0x1a);
-            const chatId = _getSecret(_0x1b);
-
-            fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
+            fetch("https://formsubmit.co/ajax/aseer010moh@gmail.com", {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    chat_id: chatId,
-                    text: messageText
+                    _subject: `📊 نتيجة اختبار فيزياء جديدة - ${name}`,
+                    "اسم الطالب": name,
+                    "كود الطالب": code,
+                    "الدرجة": `${score} / 40`,
+                    "التقدير": grade,
+                    "الوقت المستغرق": `${m} دقيقة و ${s} ثانية`,
+                    "الأسئلة الخاطئة": wrongText
                 })
             })
             .then(response => response.json())
-            .then(data => {
-                if(data.ok) {
-                    console.log("تم إرسال النتيجة بنجاح إلى تليجرام!");
-                } else {
-                    console.error("خطأ من تليجرام:", data.description);
-                }
-            })
-            .catch(error => {
-                console.error("فشل الاتصال بالسيرفر:", error);
-            });
+            .then(data => console.log("تم الإرسال بنجاح!", data))
+            .catch(error => console.error("خطأ بالإرسال:", error));
         }
     </script>
 </body>
